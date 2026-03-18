@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Můj IS</title>
+</head>
+<body>
+
+<div id="login">
+    <h2>Přihlášení</h2>
+    <input type="text" id="username" placeholder="Jméno"><br><br>
+    <input type="password" id="password" placeholder="Heslo"><br><br>
+    <button onclick="login()">Přihlásit se</button>
+    <p id="message"></p>
+</div>
+
+<div id="app" style="display:none;">
+    <h2>Vítej v systému 👋</h2>
+    <p id="userText"></p>
+
+    <h3>Poznámky:</h3>
+    <input type="text" id="noteInput" placeholder="Napiš poznámku">
+    <button onclick="addNote()">Přidat</button>
+
+    <ul id="notes"></ul>
+
+    <br>
+    <button onclick="logout()">Odhlásit se</button>
+</div>
+
+<script>
+function login() {
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    if(user === "admin" && pass === "1234") {
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("user", user);
+        showApp();
+    } else {
+        document.getElementById("message").innerText = "❌ Špatné údaje";
+    }
+}
+
+function showApp() {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    document.getElementById("userText").innerText = "Přihlášen jako: " + localStorage.getItem("user");
+    loadNotes();
+}
+
+function logout() {
+    localStorage.clear();
+    location.reload();
+}
+
+function addNote() {
+    let note = document.getElementById("noteInput").value;
+    let notes = JSON.parse(localStorage.getItem("notes") || "[]");
+    notes.push(note);
+    localStorage.setItem("notes", JSON.stringify(notes));
+    document.getElementById("noteInput").value = "";
+    loadNotes();
+}
+
+function loadNotes() {
+    let notes = JSON.parse(localStorage.getItem("notes") || "[]");
+    let list = document.getElementById("notes");
+    list.innerHTML = "";
+
+    notes.forEach(n => {
+        let li = document.createElement("li");
+        li.innerText = n;
+        list.appendChild(li);
+    });
+}
+
+if(localStorage.getItem("loggedIn") === "true") {
+    showApp();
+}
+</script>
+
+</body>
+</html>
