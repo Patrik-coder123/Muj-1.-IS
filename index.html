@@ -37,7 +37,14 @@ function login() {
         localStorage.setItem("user", user);
         showApp();
     } else {
-        document.getElementById("message").innerText = "❌ Špatné údaje";
+        document.getElementById("message").innerText = "❌ Nesprávné údaje";
+    }
+     if(user === "skibidy" && pass === "toilet") {
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("user", user);
+        showApp();
+    } else {
+        document.getElementById("message").innerText = "❌ Nesprávné údaje";
     }
 }
 
